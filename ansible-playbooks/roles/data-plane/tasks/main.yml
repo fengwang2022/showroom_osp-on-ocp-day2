@@ -102,14 +102,18 @@
         ssh-privatekey: "{{ nova_migration_key_files.results[0].content }}"
         ssh-publickey: "{{ nova_migration_key_files.results[1].content }}"
 
-- name: Create subscription manager authentication JSON
-  set_fact:
+- name: Configure optional Satellite registration
+  ansible.builtin.import_tasks: satellite_registration.yml
+
+- name: Create subscription manager authentication JSON for Customer Portal
+  ansible.builtin.set_fact:
     rhc_auth_json: "{{ {'login': {'username': subscription_manager_username, 'password': subscription_manager_password}} | to_json }}"
-  when: 
+  when:
+    - satellite_url | default('') | length == 0
     - subscription_manager_username != ""
     - subscription_manager_password != ""
 
-- name: Create subscription manager secret
+- name: Create subscription manager secret for Customer Portal
   kubernetes.core.k8s:
     state: present
     definition:
@@ -121,7 +125,8 @@
       type: Opaque
       data:
         rhc_auth: "{{ rhc_auth_json | b64encode }}"
-  when: 
+  when:
+    - satellite_url | default('') | length == 0
     - subscription_manager_username != ""
     - subscription_manager_password != ""
 
