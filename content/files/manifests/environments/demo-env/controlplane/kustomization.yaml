@@ -1,9 +1,11 @@
+# Rendered by RHOSO-enablement role: control-plane
+# demo-env controlplane overlay — patches the NNCP names/hostnames/external IPs
+# for lab 7xzzg and the NetConfig DNS domains.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
   - ../../../base/controlplane
-
 
 patches:
   - target:
@@ -14,13 +16,13 @@ patches:
     patch: |-
       - op: replace
         path: /metadata/name
-        value: "control-plane-cluster-zc46s-1"
+        value: "control-plane-cluster-7xzzg-1"
       - op: replace
         path: /spec/nodeSelector/kubernetes.io~1hostname
-        value: "control-plane-cluster-zc46s-1"
+        value: "control-plane-cluster-7xzzg-1"
       - op: replace
         path: /spec/desiredState/interfaces/3/ipv4/address/0/ip
-        value: "192.168.20.16"
+        value: "192.168.20.80 "
 
   - target:
       group: nmstate.io
@@ -30,13 +32,13 @@ patches:
     patch: |-
       - op: replace
         path: /metadata/name
-        value: "control-plane-cluster-zc46s-2"
+        value: "control-plane-cluster-7xzzg-2"
       - op: replace
         path: /spec/nodeSelector/kubernetes.io~1hostname
-        value: "control-plane-cluster-zc46s-2"
+        value: "control-plane-cluster-7xzzg-2"
       - op: replace
         path: /spec/desiredState/interfaces/3/ipv4/address/0/ip
-        value: "192.168.20.17"
+        value: "192.168.20.81 "
 
   - target:
       group: nmstate.io
@@ -46,13 +48,13 @@ patches:
     patch: |-
       - op: replace
         path: /metadata/name
-        value: "control-plane-cluster-zc46s-3"
+        value: "control-plane-cluster-7xzzg-3"
       - op: replace
         path: /spec/nodeSelector/kubernetes.io~1hostname
-        value: "control-plane-cluster-zc46s-3"
+        value: "control-plane-cluster-7xzzg-3"
       - op: replace
         path: /spec/desiredState/interfaces/3/ipv4/address/0/ip
-        value: "192.168.20.18"
+        value: "192.168.20.82 "
 
   - target:
       kind: NetConfig
@@ -60,16 +62,16 @@ patches:
     patch: |-
       - op: replace
         path: /spec/networks/0/dnsDomain
-        value: ctlplane.sandbox-zc46s-ocp4-cluster.svc.cluster.local
+        value: ctlplane.sandbox-7xzzg-ocp4-cluster.svc.cluster.local
       - op: replace
         path: /spec/networks/1/dnsDomain
-        value: internalapi.sandbox-zc46s-ocp4-cluster.svc.cluster.local
+        value: internalapi.sandbox-7xzzg-ocp4-cluster.svc.cluster.local
       - op: replace
         path: /spec/networks/2/dnsDomain
-        value: tenant.sandbox-zc46s-ocp4-cluster.svc.cluster.local
+        value: tenant.sandbox-7xzzg-ocp4-cluster.svc.cluster.local
       - op: replace
         path: /spec/networks/3/dnsDomain
-        value: storage.sandbox-zc46s-ocp4-cluster.svc.cluster.local
+        value: storage.sandbox-7xzzg-ocp4-cluster.svc.cluster.local
       - op: replace
         path: /spec/networks/4/dnsDomain
-        value: external.sandbox-zc46s-ocp4-cluster.svc.cluster.local
+        value: external.sandbox-7xzzg-ocp4-cluster.svc.cluster.local
